@@ -1,10 +1,13 @@
 package vista;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -36,7 +39,7 @@ public class VistaPrincipal extends JFrame {
     private JTextField txtCodigo;
     private JTextField txtTitulo;
     private JTextField txtCurso;
-    private JTextField txtFecha;
+    private JDateChooser dateChooser;
     private JComboBox<Estado> cmbEstado;
 
     private JButton btnRegistrar;
@@ -94,12 +97,15 @@ public class VistaPrincipal extends JFrame {
         estilizarTextField(txtCurso);
         pnlFormulario.add(txtCurso);
 
-        JLabel lblFec = new JLabel("Fecha entrega (dd/MM/yyyy):");
+        JLabel lblFec = new JLabel("Fecha entrega:");
         lblFec.setFont(fuenteEtiqueta);
         pnlFormulario.add(lblFec);
-        txtFecha = new JTextField();
-        estilizarTextField(txtFecha);
-        pnlFormulario.add(txtFecha);
+        dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("dd/MM/yyyy");
+        dateChooser.setFont(new Font("Arial", Font.PLAIN, 13));
+        dateChooser.setBackground(Color.WHITE);
+        dateChooser.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
+        pnlFormulario.add(dateChooser);
 
         JLabel lblEst = new JLabel("Estado:");
         lblEst.setFont(fuenteEtiqueta);
@@ -210,7 +216,11 @@ public class VistaPrincipal extends JFrame {
     }
 
     public String getFecha() {
-        return txtFecha.getText().trim();
+        Date date = dateChooser.getDate();
+        if (date == null) {
+            return "";
+        }
+        return new SimpleDateFormat("dd/MM/yyyy").format(date);
     }
 
     public Estado getEstadoSeleccionado() {
@@ -265,7 +275,7 @@ public class VistaPrincipal extends JFrame {
         txtCodigo.setText("");
         txtTitulo.setText("");
         txtCurso.setText("");
-        txtFecha.setText("");
+        dateChooser.setDate(null);
         cmbEstado.setSelectedIndex(0);
     }
 
@@ -275,5 +285,25 @@ public class VistaPrincipal extends JFrame {
 
     public void mostrarError(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    // muestra un Si/No y devuelve true si el usuario eligio Si
+    public boolean confirmar(String mensaje) {
+        int respuesta = JOptionPane.showConfirmDialog(
+                this, mensaje, "Confirmar", JOptionPane.YES_NO_OPTION);
+        return respuesta == JOptionPane.YES_OPTION;
+    }
+
+    // dialogo para escoger un nuevo estado de la lista
+    public Estado seleccionarEstado(Estado actual) {
+        return (Estado) JOptionPane.showInputDialog(
+                this,
+                "Selecciona el nuevo estado:",
+                "Cambiar estado",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                Estado.values(),
+                actual
+        );
     }
 }
