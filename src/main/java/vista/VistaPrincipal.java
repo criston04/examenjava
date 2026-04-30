@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,11 +19,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import modelo.Estado;
+import modelo.Tarea;
 
 /**
  * Ventana principal del sistema. Construida sin paleta grafica.
  */
 public class VistaPrincipal extends JFrame {
+
+    private static final long serialVersionUID = 1L;
 
     // colores que se reusan
     private final Color colorPrimario = new Color(33, 64, 154);
@@ -241,6 +245,20 @@ public class VistaPrincipal extends JFrame {
 
     public DefaultTableModel getModeloTabla() {
         return modeloTabla;
+    }
+
+    // pinta en la tabla la lista de tareas que recibe del controlador
+    public void cargarTareas(List<Tarea> tareas) {
+        modeloTabla.setRowCount(0);
+        for (Tarea t : tareas) {
+            modeloTabla.addRow(new Object[]{
+                t.getCodigo(),
+                t.getTitulo(),
+                t.getCurso(),
+                t.getFechaEntrega(),
+                t.getEstado()
+            });
+        }
     }
 
     public void limpiarFormulario() {

@@ -1,5 +1,7 @@
 package main;
 
+import controlador.ControladorTareas;
+import modelo.GestorTareas;
 import vista.VistaPrincipal;
 
 /**
@@ -12,7 +14,10 @@ import vista.VistaPrincipal;
 public class Main {
 
     public static void main(String[] args) {
+        GestorTareas modelo = new GestorTareas();
         VistaPrincipal vista = new VistaPrincipal();
+        ControladorTareas controlador = new ControladorTareas(modelo, vista);
+
         vista.setVisible(true);
     }
 }
