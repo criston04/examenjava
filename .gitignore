@@ -1,0 +1,22 @@
+# Compilados
+*.class
+/out/
+/bin/
+/build/
+/target/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+nbproject/private/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+
+.claude/settings.local.json
